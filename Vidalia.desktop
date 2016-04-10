@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Tor Browser
+GenericName=Enabled Red Tor/Vidalia/Privoxy
+Comment=Enabled Red Tor + vidalia + privoxy
+Categories=Network;WebBrowser;Security;
+Exec=sh -c 'service tor start && service privoxy start && vidalia' dummy %k
+Name[es_US]=Vidalia
+Icon=/root/Downloads/vidalia.png

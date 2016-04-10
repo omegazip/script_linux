@@ -1,0 +1,14 @@
+Comandos para instalar M/FF
+
+
+Primero removemos  Iceweasel con:  apt-get remove iceweasel 
+
+Luego corremos estos: 
+1- echo -e "\ndeb http://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt all main" | tee -a /etc/apt/sources.list > /dev/null
+2- apt-key adv --recv-keys --keyserver keyserver.ubuntu.com C1289A29
+3-  apt-get update
+4- apt-get install firefox-mozilla-build
+
+Si les da error en la instalación corremos:   apt-get update --fix-missing
+
+y volvemos a correr:   apt-get install firefox-mozilla-build

@@ -1,0 +1,75 @@
+#!/bin/bash
+# -- UTF 8 --
+ 
+iptables="/sbin/iptables"
+LAN="eth0"
+WIFI="wlan0"
+#GEASS_CASA_LAN="10.10.0.5"
+#GEASS_CASA_WIFI="10.10.0.51"
+#CASA_NETWORK="10.10.0.0/24"
+#IPI_NETWORK="192.168.1.0/24"
+#FREEDOM="192.168.1.3"
+#ERNESTO="192.168.1.8"
+#YORDAN="192.168.1.12"
+#GEASS_IPI="192.168.1.13"
+#ALAIN0="192.168.1.30"
+#ALAIN1="192.168.1.31"
+#ALAIN2="192.168.1.32"
+#YANDY="192.168.1.107"
+ 
+echo ""
+ 
+## Limpiar tablas ##
+##
+## start fresh
+iptables -Z; # zero counters
+iptables -F; # flush (delete) rules
+iptables -X; # delete all extra chains
+#echo "  - Hecho FLUS a iptables" && echo""
+ 
+## Definir politica DROP por defecto ##
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+#echo "  - Definida politica DROP por default" && echo""
+ 
+## Permitir todo a localhost ##
+iptables -A INPUT -i lo -j ACCEPT
+#echo "  - Permitido todo para localhost" && echo""
+ 
+## Permitir entrar paquetes de conexiones que yo inicie ##
+iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+#iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+#echo "  - Permitidos paquetes de conexiones iniciadas por mi" && echo""
+
+iptables -A INPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -j ULOG
+ 
+## Aceptando PING en CASA ##
+#iptables -A INPUT -i $LAN -p icmp -s $CASA_NETWORK -d $GEASS_CASA_LAN -j ACCEPT
+#iptables -A INPUT -i $WIFI -p icmp -s $CASA_NETWORK -d $GEASS_CASA_WIFI -j ACCEPT
+#echo "  - Aceptado PING en CASA" && echo""
+ 
+## Aceptando SSH en CASA ##
+#iptables -A INPUT -i $LAN -p tcp -s $CASA_NETWORK -d $GEASS_CASA_LAN --dport 22 -j ACCEPT
+#iptables -A INPUT -i $WIFI -p tcp -s $CASA_NETWORK -d $GEASS_CASA_WIFI --dport 22 -j ACCEPT
+#echo "  - Aceptado SSH en CASA" && echo""
+ 
+## Aceptando HTTP en CASA ##
+#iptables -A INPUT -i $LAN -p tcp -s $CASA_NETWORK -d $GEASS_CASA_LAN --dport 80 -j ACCEPT
+#iptables -A INPUT -i $WIFI -p tcp -s $CASA_NETWORK -d $GEASS_CASA_WIFI --dport 80 -j ACCEPT
+#echo "  - Aceptado HTTP en CASA" && echo""
+ 
+## Aceptando PING en CEPERO ##
+#iptables -A INPUT -i $LAN -p icmp -s $IPI_NETWORK -d $GEASS_IPI -j ACCEPT
+#echo "  - Aceptado PING en CEPERO" && echo""
+ 
+## Aceptando SSH en CEPERO ##
+#iptables -A INPUT -i $LAN -p tcp -s $IPI_NETWORK -d $GEASS_IPI --dport 22 -j ACCEPT
+#echo "  - Aceptado SSH en CEPERO" && echo""
+ 
+## Aceptando HTTP en CEPERO ##
+#iptables -A INPUT -i $LAN -p tcp -s $IPI_NETWORK -d $GEASS_IPI --dport 80 -j ACCEPT
+#echo "  - Aceptado HTTP a IPs espec�ficas en CEPERO" && echo""
+ 
+echo "      ##############################"
+echo "      ## IPTABLES CONFIGURADO OK! ##"
+echo "      ##############################"

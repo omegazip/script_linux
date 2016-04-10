@@ -1,0 +1,102 @@
+   87  gpg --keyserver keys.gnupg.net --recv 886DDD89
+   88  gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -
+   89  apt-get update
+   90  apt-get install tor deb.torproject.org-keyring
+   91  apt-get update
+   92  apt-get install tor deb.torproject.org-keyring
+   93  apt-get --version install tor deb.torproject.org-keyring
+   94  man apt-get 
+   95  apt-get --verbose-versions install tor deb.torproject.org-keyring
+
+
+  127  apt-get install torbrowser-launcher
+  128  apt-get --verbose-versions install torbrowser-launcher
+  129  apt-get --verbose-versions install torbrowser
+
+
+  wget https://raw.github.com/Andrwe/privoxy-blocklist/master/privoxy-blocklist.sh --no-check-certificate
+  210  chmod +x privoxy-blocklist.sh
+  211  netstat -tap
+
+
+  243  service network-manager stop
+  244  vi /etc/NetworkManager/NetworkManager.conf 
+  245  vi /etc/resolv.conf
+
+
+  293  vi /usr/share/tor/tor-service-defaults-torrc
+  294  service tor start
+  295  service tor status
+  296  less /var/log/tor/log
+  297  vi /usr/share/tor/tor-service-defaults-torrc
+  298  vi /etc/tor/torrc
+  299  service tor status
+  300  netstat -tapn
+  301  vi /etc/polipo/config 
+  302  apt-get install polipo
+  303  adduser --system --no-create-home debian-tor debian-tor
+  304  adduser --system --no-create-home debian-tor
+
+
+  312  chmod +x privoxy-blocklist.sh
+  313  cd Documents/
+  314  chmod +x privoxy-blocklist.sh
+  315  sed -i s/^SCRIPTCONF.*/SCRIPTCONF=\\/etc\\/privoxy\\/blocklist.conf/ privoxy-blocklist.sh
+  316  touch /etc/privoxy/blocklist.conf
+  317  vi blocklist.conf
+  318  ./privoxy-blocklist.sh
+  319  vi privoxy-blocklist.sh
+  320  bash privoxy-blocklist.sh
+  321  su privoxys
+  322  vi /etc/privoxy/config 
+  323  vi privoxy-blocklist.sh
+  324  vi blocklist.conf
+
+
+#dnsmasq
+#groupadd -r dnsmasq
+#adduser dnsmasq dnsmasq
+#chown dnsmasq.dnsmasq /etc/dnsmasq.d -R
+#service dnsmasq restart
+
+#unbound
+apt.get install unbound
+
+wget ftp://FTP.INTERNIC.NET/domain/named.cache -O /etc/unbound/root.hints
+#chown unbound.unbound /etc/unbound/root.hints
+
+unbound-anchor -a "/etc/unbound/keys/unbound-root-anchor.key"
+#chown unbound.unbound /etc/unbound/keys/unbound-root-anchor.key
+
+# download the anti-ad server list to Unbound's configuration directory. 
+curl -sS -L --compressed "http://pgl.yoyo.org/adservers/serverlist.php?hostformat=unbound&showintro=0&mimetype=plaintext" > /etc/unbound/ad_servers
+#chown unbound.unbound /etc/unbound/ad_servers
+
+#Reemplazar unbound.conf
+root@kali:/etc/unbound# chown unbound.unbound /etc/unbound -R
+root@kali:/etc/unbound# chmod 777 /etc/unbound -R
+
+vi /run/systemd/generator.late/unbound.service
+
+
+
+#dnscrypt-proxy
+#debe ser agregado al cron
+wget https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/dnscrypt-resolvers.csv -O /etc/dnscrypt.resolvers.csv
+wget https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/dnscrypt-resolvers.csv.minisig -O /etc/dnscrypt-resolvers.csv.minisig
+wget https://github.com/jedisct1/minisign/tarball/master -O minisign.tgz
+apt-get install cmake
+tar zxvf minisign.tgz
+cd jedisct1-minisign-2ca0bea/
+mkdir build
+cd build/
+cmake ..
+install cmake
+minisign -VP RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3 -m dnscrypt-resolvers.csv
+dig +short rs.dns-oarc.net txt
+
+adduser --system --no-create-home dnscrypt dnscrypt
+
+
+
+/usr/local/sbin/dnscrypt-proxy --daemonize --ephemeral-keys --user=dnscrypt --local-address=127.0.0.2:4053 --edns-payload-size=4096 --resolver-address=50.116.40.226 --provider-name=2.dnscrypt-cert.gemma.zee.li --provider-key=FDFC:B2D3:C5F9:1D25:58CB:5F6D:9577:5749:0AAD:8B63:B4C3:A009:6D73:96C8:4BB4:1D8C
